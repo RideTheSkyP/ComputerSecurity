@@ -26,25 +26,7 @@ class Decrypt:
 		for line in self.data.splitlines():
 			self.cryptograms.append(Cryptogram(line))
 
-	def find_best_key(self, keys, pos):
-		possibleLetter = ord(' ')
-		count = 0
-
-		for letter in keys:
-			counter = 0
-			for cryptogram in self.cryptograms:
-				if pos >= len(cryptogram.letters):
-					continue
-				# Check if XOR get char from alphabet
-				if (chr(ord(cryptogram.letterByIdx(pos)) ^ letter)) in self.letterFreq.keys():
-					counter += 1
-			if counter > count:
-				count = counter
-				possibleLetter = letter
-
-		return possibleLetter
-
-	def find_key(self):
+	def findKey(self):
 		key = []
 		longestString = max(len(cryptogram.letters) for cryptogram in self.cryptograms)
 
@@ -58,20 +40,35 @@ class Decrypt:
 					possibleKey = ord(cryptogram.letterByIdx(i)) ^ ord(letter)
 					possibleKeys[possibleKey] = possibleKeys.get(possibleKey, 0) + self.letterFreq[letter]
 
-			d = sorted(possibleKeys.keys(), key=lambda k: possibleKeys[k], reverse=True)
-			print()
+			sortedKeys = sorted(possibleKeys.keys(), key=lambda k: possibleKeys[k], reverse=True)
 
-			key.append(self.find_best_key(d, i))
+			possibleLetter = ord(' ')
+			count = 0
+
+			for letter in sortedKeys:
+				counter = 0
+
+				for cryptogram in self.cryptograms:
+					if i >= len(cryptogram.letters):
+						continue
+					if (chr(ord(cryptogram.letterByIdx(i)) ^ letter)) in self.letterFreq.keys():
+						counter += 1
+
+				if counter > count:
+					count = counter
+					possibleLetter = letter
+
+			key.append(possibleLetter)
 		return key
 
 	def decrypt(self):
-		key = self.find_key()
+		key = self.findKey()
 		result = ""
 
 		for cryptogram in self.cryptograms:
 			for i in range(0, len(cryptogram.letters)):
 				result += chr(ord(cryptogram.letterByIdx(i)) ^ key[i])
-			result += '\n'
+			result += "\n"
 
 		return result
 
