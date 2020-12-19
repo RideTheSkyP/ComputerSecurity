@@ -14,4 +14,4 @@ protocol.createServer(options, (req, res) =>
 	res.end("Hello world\n");
 }).listen(port, host);
 
-console.log(`server running on http://${host}:${port}`)	
+console.log(`Server running on http://${host}:${port}`)
