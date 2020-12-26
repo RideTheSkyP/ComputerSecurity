@@ -2,20 +2,24 @@
 
 {% block title %} Sign in {% endblock %}
 {% block content %}
-  <h2>Create Transfer</h2>
+    <h2>Transfer money</h2>
 
-  <form method="post">
-    {% csrf_token %}
-    <label for="transferto">Transfer from:</label><br>
-    <input type="text" id="transferto" name="transferto"><br>
-    <label for="transferfrom">Transfer to:</label><br>
-    <input type="text" id="transferfrom" name="transferfrom"><br>
-    <label for="amount">Amount:</label><br>
-    <input type="text" id="amount" name="amount"><br>
-    <button type="submit">Transfer</button>
-  </form>
+    <form method="post">
+        {% csrf_token %}
+        <label for="transferto">Transfer from:</label><br>
+        <input type="number" id="transferto" name="transferto"><br>
+        <label for="transferfrom">Transfer to:</label><br>
+        <input type="number" id="transferfrom" name="transferfrom"><br>
+        <label for="amount">Amount:</label><br>
+        <input type="number" step="0.01" id="amount" name="amount"><br>
+        <button type="submit">Transfer</button>
+    </form>
 
-  <div class="row">
-  <div class="col-md-8 mx-auto social-container my-2 order-md-1"></div>
- </div>
+    <div class="row">
+    <div class="col-md-8 mx-auto social-container my-2 order-md-1"></div>
+    </div>
+    <main>
+        {% block success %}
+        {% endblock %}
+    </main>
 {% endblock %}

@@ -4,7 +4,6 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.forms.forms import BaseForm, Form
-# from core.databaseConnection import Database
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from core.models import Transfers
@@ -60,7 +59,7 @@ def transfer(request):
         amount = request.POST.get("amount")
         transfers = Transfers(userId=userId, transferFrom=transferFrom, transferTo=transferTo, amount=amount)
         transfers.save()
-        return render(request, "error.html")
+        return render(request, "transactionComplete.html")
     return render(request, "bankForm.html")
 
 
@@ -79,9 +78,9 @@ def signup(request):
             form.save()
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password1")
-            user = authenticate(username=username, password=password, )
+            user = authenticate(username=username, password=password)
             login(request, user)
             return redirect("home")
     else:
-        form = UserCreationForm()
+        form = SignUpForm()
     return render(request, "signup.html", {"form": form})
