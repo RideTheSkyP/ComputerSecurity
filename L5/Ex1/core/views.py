@@ -10,6 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from core.models import Transfers
 from bs4 import BeautifulSoup
 from pathlib import Path
+from django.template import Template, Context
 
 
 BASE = Path(__file__).resolve().parent.parent
@@ -66,7 +67,9 @@ def transfer(request):
 
 @login_required()
 def transactionsHistory(request):
-    return render(request, "transactionsHistory.html")
+
+    transactions = [{"sad", "das", "dsa"}, {"pol", "olp", "lop"}]
+    return render(request, "transactionsHistory.html", {"transactions": transactions})
 
 
 def signup(request):
