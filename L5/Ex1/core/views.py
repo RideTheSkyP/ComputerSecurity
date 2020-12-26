@@ -8,9 +8,7 @@ from django.forms.forms import BaseForm, Form
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from core.models import Transfers
-from bs4 import BeautifulSoup
 from pathlib import Path
-from django.template import Template, Context
 
 
 BASE = Path(__file__).resolve().parent.parent
@@ -67,8 +65,9 @@ def transfer(request):
 
 @login_required()
 def transactionsHistory(request):
-
-    transactions = [{"sad", "das", "dsa"}, {"pol", "olp", "lop"}]
+    transactions = []
+    for t in Transfers.objects.raw(f"select * from core_transfers where userId={request.user.id}"):
+        transactions.append([t.transferFrom, t.transferTo, t.amount])
     return render(request, "transactionsHistory.html", {"transactions": transactions})
 
 
