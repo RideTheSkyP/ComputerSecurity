@@ -5,6 +5,15 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.forms.forms import BaseForm, Form
 # from core.databaseConnection import Database
+from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy as _
+from core.models import Transfers
+from bs4 import BeautifulSoup
+from pathlib import Path
+
+
+BASE = Path(__file__).resolve().parent.parent
+TEMPLATES = Path(BASE / "templates")
 
 
 def startPage(request):
@@ -20,6 +29,7 @@ def loginToAcc(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
+            # form.save()
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")
             user = authenticate(username=username, password=password)
@@ -44,8 +54,19 @@ def statistics(request):
 @login_required()
 def transfer(request):
     if request.method == "POST":
+        userId = request.user.id
+        transferFrom = request.POST.get("transferfrom")
+        transferTo = request.POST.get("transferto")
+        amount = request.POST.get("amount")
+        transfers = Transfers(userId=userId, transferFrom=transferFrom, transferTo=transferTo, amount=amount)
+        transfers.save()
         return render(request, "error.html")
     return render(request, "bankForm.html")
+
+
+@login_required()
+def transactionsHistory(request):
+    return render(request, "transactionsHistory.html")
 
 
 def signup(request):
