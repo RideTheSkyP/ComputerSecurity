@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from core.models import Transfers
 from pathlib import Path
+from core.forms import SignUpForm
 
 
 BASE = Path(__file__).resolve().parent.parent
@@ -73,14 +74,12 @@ def transactionsHistory(request):
 
 def signup(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password1")
-            user = authenticate(username=username, password=password)
-            # db = Database()
-            # db.addUser(username, password)
+            user = authenticate(username=username, password=password, )
             login(request, user)
             return redirect("home")
     else:
