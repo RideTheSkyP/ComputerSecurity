@@ -25,7 +25,12 @@ def startPage(request):
 
 @login_required()
 def home(request):
-    return render(request, "home.html")
+    money = None
+    for transaction in Transfers.objects.raw(f"select * from core_transfers where userId={request.user.id}"):
+        money = transaction.money
+    accountNumber = request.user.id * 1321241212
+    data = {"money": money if None else 50000, "accountNumber": accountNumber}
+    return render(request, "home.html", context=data)
 
 
 @user_passes_test(lambda u: u.is_anonymous, login_url="home")
@@ -61,14 +66,26 @@ def transfer(request):
         userId = request.user.id
         transferFrom = request.POST.get("transferfrom")
         transferTo = request.POST.get("transferto")
-        amount = request.POST.get("amount")
+        amount = float(request.POST.get("amount"))
         save = request.POST.get("save")
-        if save == "true":
-            transfers = Transfers(userId=userId, transferFrom=transferFrom, transferTo=transferTo, amount=amount)
+
+        money = 50000
+        for transaction in Transfers.objects.raw(f"select * from core_transfers where userId={request.user.id}"):
+            money = float(transaction.money)
+
+        if (transferTo == transferFrom) or (int(transferFrom) != int(request.user.id) * 1321241212) \
+                or (save != "true") or (amount > money):
+            return redirect("home")
+        else:
+            transfers = Transfers(userId=userId, transferFrom=transferFrom, transferTo=transferTo, amount=amount, money=money-amount)
             transfers.save()
             return render(request, "transactionComplete.html")
-        else:
-            return render(request, "home.html")
+
+        # if save == "true":
+
+        #     return render(request, "transactionComplete.html")
+        # else:
+        #     return render(request, "home.html")
     return render(request, "bankForm.html")
 
 
@@ -76,7 +93,7 @@ def transfer(request):
 def transactionsHistory(request):
     transactions = []
     for t in Transfers.objects.raw(f"select * from core_transfers where userId={request.user.id}"):
-        transactions.append([t.transferFrom, t.transferTo, t.amount])
+        transactions.append([t.transferFrom, t.transferTo, t.amount, t.money])
     return render(request, "transactionsHistory.html", {"transactions": transactions})
 
 
@@ -103,9 +120,7 @@ def changePassword(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
-            return redirect("home")
-        else:
-            return render(request, "error.html")
+        return redirect("home")
     else:
         form = PasswordChangeForm(request.user)
     return render(request, "changePassword.html", {"form": form})

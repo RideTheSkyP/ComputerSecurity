@@ -6,3 +6,4 @@ class Transfers(models.Model):
 	transferFrom = models.IntegerField()
 	transferTo = models.IntegerField()
 	amount = models.FloatField()
+	money = models.FloatField(default=50000)
