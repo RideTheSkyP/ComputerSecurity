@@ -12,8 +12,22 @@
         <input type="number" id="transferfrom" name="transferfrom"><br>
         <label for="amount">Amount:</label><br>
         <input type="number" step="0.01" id="amount" name="amount"><br>
-        <button type="submit">Transfer</button>
+        <button onclick="confirmation()">Transfer</button>
+        <input type="hidden" name="save" value="" id="save">
     </form>
+
+    <script>
+        function confirmation()
+        {
+            document.getElementById('save').value = confirm('Confirm transaction?').toString();
+
+            {#p = document.createElement("p");#}
+            {#p.innerHTML = confirm('Confirm transaction?').toString();#}
+            {#document.body.appendChild(p);#}
+        }
+    </script>
+
+
 
     <div class="row">
     <div class="col-md-8 mx-auto social-container my-2 order-md-1"></div>

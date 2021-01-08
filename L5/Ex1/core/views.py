@@ -12,6 +12,8 @@ from core.models import Transfers
 from pathlib import Path
 from core.forms import SignUpForm
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib import messages
+
 
 BASE = Path(__file__).resolve().parent.parent
 TEMPLATES = Path(BASE / "templates")
@@ -60,9 +62,13 @@ def transfer(request):
         transferFrom = request.POST.get("transferfrom")
         transferTo = request.POST.get("transferto")
         amount = request.POST.get("amount")
-        transfers = Transfers(userId=userId, transferFrom=transferFrom, transferTo=transferTo, amount=amount)
-        transfers.save()
-        return render(request, "transactionComplete.html")
+        save = request.POST.get("save")
+        if save == "true":
+            transfers = Transfers(userId=userId, transferFrom=transferFrom, transferTo=transferTo, amount=amount)
+            transfers.save()
+            return render(request, "transactionComplete.html")
+        else:
+            return render(request, "home.html")
     return render(request, "bankForm.html")
 
 

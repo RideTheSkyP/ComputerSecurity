@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 import os
 from pathlib import Path
+from django.contrib.messages import constants as message_constants
+
+
+MESSAGE_LEVEL = message_constants.INFO
 
 # with(open("FBCreds.txt")) as file:
 #    fb = file.read().split(sep=";")
