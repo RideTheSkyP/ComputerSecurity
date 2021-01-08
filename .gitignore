@@ -1,4 +1,4 @@
-
+.idea
 *.pyc
 __pycache__
 L5/Ex1/core/migrations/

@@ -5,11 +5,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.forms.forms import BaseForm, Form
 from django.contrib.auth.models import User
+from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_decode
 from django.utils.translation import ugettext_lazy as _
 from core.models import Transfers
 from pathlib import Path
 from core.forms import SignUpForm
-
+from django.contrib.auth.decorators import user_passes_test
 
 BASE = Path(__file__).resolve().parent.parent
 TEMPLATES = Path(BASE / "templates")
@@ -24,6 +26,7 @@ def home(request):
     return render(request, "home.html")
 
 
+@user_passes_test(lambda u: u.is_anonymous, login_url="home")
 def loginToAcc(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
@@ -71,6 +74,7 @@ def transactionsHistory(request):
     return render(request, "transactionsHistory.html", {"transactions": transactions})
 
 
+@user_passes_test(lambda u: u.is_anonymous, login_url="home")
 def signup(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
