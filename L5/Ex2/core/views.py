@@ -25,11 +25,12 @@ def startPage(request):
 
 @login_required()
 def home(request):
-    money = None
+    money = 50000
     for transaction in Transfers.objects.raw(f"select * from core_transfers where userId={request.user.id}"):
         money = transaction.money
+
     accountNumber = request.user.id * 1321241212
-    data = {"money": money if None else 50000, "accountNumber": accountNumber}
+    data = {"money": money, "accountNumber": accountNumber}
     return render(request, "home.html", context=data)
 
 
@@ -72,7 +73,7 @@ def transfer(request):
         money = 50000
         for transaction in Transfers.objects.raw(f"select * from core_transfers where userId={request.user.id}"):
             money = float(transaction.money)
-        print(request.POST)
+
         if (transferTo == transferFrom) or (int(transferFrom) != int(request.user.id) * 1321241212) \
                 or (save != "true") or (amount > money):
             return redirect("home")
@@ -81,11 +82,6 @@ def transfer(request):
             transfers.save()
             return render(request, "transactionComplete.html")
 
-        # if save == "true":
-
-        #     return render(request, "transactionComplete.html")
-        # else:
-        #     return render(request, "home.html")
     return render(request, "bankForm.html")
 
 
