@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+    <style>
+    table
+    {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th
+    {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even)
+    {
+        background-color: #dddddd;
+    }
+    </style>
+    </head>
+
+    <body>
+
+    <h2>Transactions History</h2>
+
+    <table>
+        <tr>
+            <th>Transfer from</th>
+            <th>Transfer to</th>
+            <th>Amount</th>
+            <th>Balance</th>
+        </tr>
+        {% for transaction in transactions %}
+        <tr>
+            {% for item in transaction %}
+            <td> {{ item }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    </body>
+{% endblock %}
