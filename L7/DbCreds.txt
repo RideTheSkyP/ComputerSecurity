@@ -1,0 +1,2 @@
+/cloudsql/pwr-pz-game-website:europe-west3:game-website;root;djdfdjdf;Website
+127.0.0.1;3307;Website;root;djdfdjdf
