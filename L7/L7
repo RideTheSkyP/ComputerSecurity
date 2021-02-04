@@ -1,0 +1,32 @@
+curl -X post --cacert ./certA.crt -d '{"username":"user", "password":"password"}' -H 'Content-Type:application/json' https://mybankpwrcs.com/api/token/
+
+
+curl -X post url --cacert ./certA.crt -H 'Authorization: JWT [token]' https://mybankpwrcs.com/home/
+
+
+# Get token
+curl -X post --cacert ./certA.crt -d '{"username":"user", "password":"password"}' -H 'Content-Type:application/json' https://mybankpwrcs.com/api/token/obtain/
+
+# New token
+curl -X post --cacert ./certA.crt -d '{"refresh":[refreshToken]}' -H 'Content-Type:application/json' https://mybankpwrcs.com/api/token/refresh/
+
+
+# Create user
+curl -X POST --cacert ./certA.crt -d '{"email":"user1@gmail.com", "username":"user1", "password":"password"}' -H 'Content-Type: application/json' https://mybankpwrcs.com/api/user/create/
+
+# To protect 
+curl -X POST --cacert ./certA.crt -H 'Content-Type: application/json' https://mybankpwrcs.com/api/hello/
+
+
+curl --cacert ./certA.crt -H "Content-Type: application/json" --header "Authorization: JWT [jwtToken]"  -X GET https://mybankpwrcs.com/api/hello/
+
+curl -X post --cacert ./certA.crt -d '{"username":"user1", "password":url -X GET --cacert ./certA.crt -H "Content-Type: application/json" -H "Authorization: JWT [accessJwtToken]"https://mybankpwrcs.com/api/hello/
+
+
+# Show history
+curl -X GET --cacert ./certA.crt -H "Content-Type: application/json" -H "Authorization: JWT [accessJwtToken]" https://mybankpwrcs.com/api/history/
+
+
+# Do transfer
+curl -X POST --cacert ./certA.crt -H "Content-Type: application/json" -H "Authorization: JWT [accessJwtToken]" -d '{"transferFrom":"12345", "transferTo":"54321", "amount":"22"}' https://mybankpwrcs.com/api/apitrans/
+
